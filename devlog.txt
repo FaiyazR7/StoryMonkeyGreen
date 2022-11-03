@@ -1,0 +1,11 @@
+danielH -- 2022-11-3 2:27
+Design revisions: 
+* fixed target ship date 
+* clarified the implementation of genres, displaying how many times a story was contributed/viewed
+* clarified why certain tables are separated
+* clarified site map and added login, signup 
+* clarified how login functionality will work 
+* clarified how jinja will be used 
+* Added login/signup routes 
+* touched up the component map (added arrows)
+* Added data types to table columns  
