@@ -9,3 +9,8 @@ Design revisions:
 * Added login/signup routes 
 * touched up the component map (added arrows)
 * Added data types to table columns  
+
+danielH -- 2022-11-8 9:33
+*added routes for login, register, homepage, logout, and story 
+*created mock database to display static data in routes 
+*created template for story and added jinja in homepage to display mock contributed stories 

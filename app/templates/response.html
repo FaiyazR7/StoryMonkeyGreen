@@ -1,0 +1,22 @@
+<html>
+
+  <head>
+    <title> RESPONSE PAGE </title>
+  </head>
+  <body>
+    <h2>
+      Welcome: {{username}}
+    </h2>
+    <form action="/logout" method="GET">
+      <button type="submit"> logout </button>
+    </form>
+    <h1>Stories you can read:</h1>
+    {% for item in stories %}
+    <form action="/find_stories" method="POST">
+      <button type="submit" name="title" value="{{ item }}"> {{ item }} </button>
+    </form>
+     <br>
+    {% endfor %}
+  </body>
+
+</html>
