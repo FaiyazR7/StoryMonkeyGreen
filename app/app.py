@@ -12,18 +12,27 @@ def welcome():
     else:
         return render_template("login.html")
 
-@app.route("/register")
+@app.route("/register", methods=["GET","POST"])
 def register():
-    return render_template("register.html")
+    if request.method == 'GET':
+        return render_template("register.html")
+    elif request.method == 'POST':
+        if db.register_user(request.form["username"], request.form["password"]):
+            return redirect("/")
+        else:
+            return render_template("register.html")
 
 @app.route("/homepage", methods=["GET","POST"])
 def homepage():
-    #check if username exists and then if password matches, right now it will just assume everyone is faiyaz
-    session["username"] = "faiyaz"
+    #check if username exists and then if password matches
+    if db.login_user(request.form["username"], request.form["password"]):
+        session["username"] = request.form["username"]
+        return render_template("response.html", username = session["username"])
+    else:
+        return redirect("/")
     #input faiyaz into a method that will return all contributed and uncontributed stories, right now it is static 
-    contributed_stories = db.user_data[2] #data returned using .fetchall() in db.py is a list of tuples, hard to work with so convert into a normal list
-    contributed_stories = [x for y in contributed_stories for x in y] #look at the comment above
-    return render_template("response.html", username = session["username"], stories = contributed_stories)
+    # contributed_stories = db.user_data[2] #data returned using .fetchall() in db.py is a list of tuples, hard to work with so convert into a normal list
+    # contributed_stories = [x for y in contributed_stories for x in y] #look at the comment above
 
 @app.route("/find_stories", methods=["GET","POST"]) #when you click a story button, this takes you to the correct story
 def find_stories():
