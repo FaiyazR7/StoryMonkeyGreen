@@ -11,6 +11,11 @@ Design revisions:
 * Added data types to table columns  
 
 danielH -- 2022-11-8 9:33
-*added routes for login, register, homepage, logout, and story 
-*created mock database to display static data in routes 
-*created template for story and added jinja in homepage to display mock contributed stories 
+* added routes for login, register, homepage, logout, and story 
+* created mock database to display static data in routes 
+* created template for story and added jinja in homepage to display mock contributed stories 
+
+danielH -- 2022-11-9 10:10
+* connected sqlite to routes for login and registering 
+* created methods that read tables to determine legal inputs for registering or to authenticate a user 
+* created base structure of start_story route with no connections/ requests implemented yet 
