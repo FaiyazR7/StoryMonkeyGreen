@@ -78,7 +78,7 @@ def exodus():
     c.execute("DROP TABLE if exists The_Bible")
     c.execute("DROP TABLE if exists all_stories")
     c.executescript(""" 
-        CREATE TABLE users (username TEXT PRIMARY KEY, password TEXT NOT NULL, id TEXT PRIMARY KEY);
+        CREATE TABLE users (username TEXT PRIMARY KEY, password TEXT NOT NULL, id TEXT);
         CREATE TABLE daniel_contributed_stories (story TEXT PRIMARY KEY);
         CREATE TABLE faiyaz_contributed_stories (story TEXT PRIMARY KEY);
         CREATE TABLE Cinderella (username TEXT PRIMARY KEY, date TEXT NOT NULL, body TEXT NOT NULL, genre TEXT);
@@ -90,14 +90,13 @@ def exodus():
     db.close()  #close database
     return True
 #==========================================================
-#the_world = exodus()
+the_world = exodus()
 #==========================================================
 def user_exists(a): #determines if user exists
     db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
     c = db.cursor()
     results = c.execute("SELECT username, password FROM users WHERE username = ?", (a,)).fetchall() #needs to be in ' ', ? notation doesnt help with this 
     db.close()
-    print(results)
     if len(results) > 0:
         return True
     else: 
@@ -109,14 +108,15 @@ def register_user(username, password): #determines if input is valid to register
     else:
         db = sqlite3.connect(DB_FILE, check_same_thread=False) 
         c = db.cursor()
-        inserter = [(username, password, uuid.uuid1())]
+        inserter = [(username, password, f"{uuid.uuid1()}")]
+        print(inserter)
         c.executemany("INSERT INTO users VALUES(?, ?, ?)", inserter)
         #WARNING fSTRING, replace with id system to avoid later 
-        s.execute(f"CREATE TABLE ")
+        #s.execute(f"CREATE TABLE ")
         db.commit() #save changes
         db.close()
         return True
-
+register_user("daniel", "abcde")
 def login_user(username, password):
     if user_exists(username):
         db = sqlite3.connect(DB_FILE, check_same_thread=False) 
@@ -125,7 +125,7 @@ def login_user(username, password):
         db.close()
         return password == results[0][0]
     return False
-print (login_user("daniel", "abcde"))
+
 def all_users():
     db = sqlite3.connect(DB_FILE, check_same_thread=False) 
     c = db.cursor()
