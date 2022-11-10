@@ -28,6 +28,7 @@ def homepage():
     if db.login_user(request.form["username"], request.form["password"]):
         session["username"] = request.form["username"]
         return render_template("response.html", username = session["username"])
+        #return render_template("response.html", username = session["username"], stories = contributed_stories)
     else:
         return redirect("/")
     #input faiyaz into a method that will return all contributed and uncontributed stories, right now it is static 
@@ -44,12 +45,18 @@ def find_stories():
 def stories(title): #apparently methods cannot have the same name even if there are different parameters, so storied instead of stories to avoid conflict
     #method to input the story name to return all fields 
     return render_template("story.html", title = title)
+@app.route("/create_story")
+def create_story():
+    return render_template("create_story.html")
 
 @app.route("/logout")
 def logout():
     session.pop("username", None) #pop to remove things from session 
     return redirect("/")
-
+@app.route("/check")
+def check():
+    print (db.all_users())
+    return redirect("/")
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
     app.debug = True 

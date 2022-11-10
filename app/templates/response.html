@@ -10,6 +10,10 @@
     <form action="/logout" method="GET">
       <button type="submit"> logout </button>
     </form>
+    <h1>Start writing a story:</h1>
+    <form action="/create_story">
+      <button type="submit">Start story</button>
+    </form>
     <h1>Stories you can read:</h1>
     {% for item in stories %}
     <form action="/find_stories" method="POST">

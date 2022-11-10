@@ -6,12 +6,11 @@
 import sqlite3   #enable control of an sqlite database
 import csv       #facilitate CSV I/O
 DB_FILE="world.db"
-db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
-c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
+               #facilitate db ops -- you will use cursor to trigger db events
 
 #===========================MOCK STATIC DATABASE TO POPULATE ROUTES W/ DATA=============================== 
 def genesis():
-    db = sqlite3.connect(DB_FILE) #open if file exists, otherwise create
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
     c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
     c.execute("DROP TABLE if exists users") #drop so no need to delete database each time the code changes
     c.execute("DROP TABLE if exists daniel_contributed_stories")
@@ -70,7 +69,7 @@ def genesis():
 #genesis()
 #==========================================================
 def exodus():
-    db = sqlite3.connect(DB_FILE) #open if file exists, otherwise create
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
     c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
     c.execute("DROP TABLE if exists users") #drop so no need to delete database each time the code changes
     c.execute("DROP TABLE if exists daniel_contributed_stories")
@@ -94,25 +93,38 @@ def exodus():
 #the_world = exodus()
 #==========================================================
 def user_exists(a): #determines if user exists
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
     c = db.cursor()
     results = c.execute(f"SELECT username, password FROM users WHERE username = '{a}'").fetchall() #needs to be in ' ', ? notation doesnt help with this 
+    db.close()
     if len(results) > 0:
         return True
     else: 
         return False
+    
 def register_user(username, password): #determines if input is valid to register, adds to users table if so
-    c = db.cursor()
     if user_exists(username):
         return False
     else:
+        db = sqlite3.connect(DB_FILE, check_same_thread=False) 
+        c = db.cursor()
         inserter = [(username, password)]
         c.executemany("INSERT INTO users VALUES(?, ?)", inserter)
-        results = c.execute("SELECT * FROM users").fetchall()
+        #results = c.execute("SELECT * FROM users").fetchall()
+        db.commit() #save changes
+        db.close()
         return True
 def login_user(username, password):
-    c = db.cursor()
     if user_exists(username):
+        db = sqlite3.connect(DB_FILE, check_same_thread=False) 
+        c = db.cursor()
         results = c.execute(f"SELECT password FROM users WHERE username = '{username}'").fetchall()
+        db.close()
         return password == results[0][0]
     return False
-print(login_user('daniel', "abcde"))
+def all_users():
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) 
+    c = db.cursor()
+    results = c.execute("SELECT * FROM users").fetchall()
+    db.close()
+    return results
