@@ -8,7 +8,10 @@ Design revisions:
 * clarified how jinja will be used 
 * Added login/signup routes 
 * touched up the component map (added arrows)
-* Added data types to table columns  
+* Added data types to table columns
+Wiki1 revisions:
+* added authentication 
+* deleted things that make no sense   
 
 danielH -- 2022-11-8 9:33
 * added routes for login, register, homepage, logout, and story 
