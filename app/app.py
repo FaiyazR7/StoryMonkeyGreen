@@ -8,7 +8,7 @@ app.secret_key = b"hehe"
 @app.route("/")
 def welcome():
     if "username" in session: 
-        return render_template("response.html", username = session["username"])
+        return redirect("/homepage")
     else:
         return render_template("login.html")
 
@@ -21,13 +21,27 @@ def register():
             return redirect("/")
         else:
             return render_template("register.html")
+@app.route("/login", methods=["GET","POST"])
+def login():
+    #check if username exists and then if password matches
+    if request.method == 'POST':
+        if db.login_user(request.form["username"], request.form["password"]):
+            session["username"] = request.form["username"]
+            return redirect("/homepage")
+            #return render_template("response.html", username = session["username"], stories = contributed_stories)
+        else:
+            return redirect("/")
+    else: 
+        return redirect("/")
 
 @app.route("/homepage", methods=["GET","POST"])
 def homepage():
     #check if username exists and then if password matches
-    if db.login_user(request.form["username"], request.form["password"]):
-        session["username"] = request.form["username"]
-        return render_template("response.html", username = session["username"])
+    if "username" in session:
+        print("Username in session")
+        contributed_stories = db.contributed_stories(session["username"])
+        print("collected contributed stories, if any")
+        return render_template("response.html", username = session["username"], stories = contributed_stories)
         #return render_template("response.html", username = session["username"], stories = contributed_stories)
     else:
         return redirect("/")
@@ -37,14 +51,22 @@ def homepage():
 
 @app.route("/find_stories", methods=["GET","POST"]) #when you click a story button, this takes you to the correct story
 def find_stories():
-    print(request.method)
-    title_of_story = request.form["title"]
-    return redirect(url_for("stories", title = title_of_story)) #stories is the name of the function, not route ??
+    if "username" in session:
+        title_of_story = request.form["title"]
+        return redirect(url_for("stories", title = title_of_story)) #stories is the name of the function, not route ??
+    else:
+        return redirect("/")
 
 @app.route("/stories/<title>", methods=["GET","POST"])
 def stories(title): #apparently methods cannot have the same name even if there are different parameters, so storied instead of stories to avoid conflict
     #method to input the story name to return all fields 
-    return render_template("story.html", title = title)
+    if "username" in session:
+        full_story = db.full_story(title)
+        print (full_story)
+        return render_template("story.html", story = full_story, title = title)
+    else:
+        return redirect("/")
+
 @app.route("/create_story")
 def create_story():
     return render_template("create_story.html")
@@ -53,10 +75,12 @@ def create_story():
 def logout():
     session.pop("username", None) #pop to remove things from session 
     return redirect("/")
+
 @app.route("/check")
 def check():
     print (db.all_users())
     return redirect("/")
+
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
     app.debug = True 

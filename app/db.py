@@ -4,7 +4,6 @@
 #2022-10-26
 
 import sqlite3   #enable control of an sqlite database
-import uuid       #facilitate CSV I/O
 DB_FILE="world.db"
                #facilitate db ops -- you will use cursor to trigger db events
 
@@ -72,28 +71,41 @@ def exodus():
     db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
     c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
     c.execute("DROP TABLE if exists users") #drop so no need to delete database each time the code changes
+    c.execute("DROP TABLE if exists stories")
     c.execute("DROP TABLE if exists daniel_contributed_stories")
     c.execute("DROP TABLE if exists faiyaz_contributed_stories")
+    c.execute("DROP TABLE if exists contributed_stories")
     c.execute("DROP TABLE if exists Cinderella")
     c.execute("DROP TABLE if exists The_Bible")
     c.execute("DROP TABLE if exists all_stories")
     c.executescript(""" 
-        CREATE TABLE users (username TEXT PRIMARY KEY, password TEXT NOT NULL, id TEXT);
-        CREATE TABLE daniel_contributed_stories (story TEXT PRIMARY KEY);
-        CREATE TABLE faiyaz_contributed_stories (story TEXT PRIMARY KEY);
-        CREATE TABLE Cinderella (username TEXT PRIMARY KEY, date TEXT NOT NULL, body TEXT NOT NULL, genre TEXT);
-        CREATE TABLE The_Bible (username TEXT PRIMARY KEY, date TEXT NOT NULL, body TEXT NOT NULL, genre TEXT);
-        CREATE TABLE all_stories (story TEXT PRIMARY KEY, genre TEXT NOT NULL)
+        CREATE TABLE users (username TEXT PRIMARY KEY, password TEXT NOT NULL);
+        CREATE TABLE stories (title TEXT NOT NULL, username TEXT NOT NULL, date TEXT NOT NULL, body TEXT NOT NULL, genre TEXT NOT NULL);
     """
-    )
+    ) #Primary key is implicityly NOT NULL
     db.commit() #save changes
     db.close()  #close database
     return True
 #==========================================================
-the_world = exodus()
+def sample(): #adds sample data
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    register_user("daniel", "abcde")
+    register_user("faiyaz", "12345")
+    date = c.execute("SELECT DATETIME('now');").fetchall()
+    print(date)
+    contribution = [
+        ("Cinderella", "daniel", date[0][0], "Once upon a time...", "good" ),
+        ("The Bible", "daniel", date[0][0], "In the beginning...", "good" ),
+        ("The Bible", "faiyaz", date[0][0], "God created the...", "good")
+    ]
+    c.executemany("INSERT INTO stories VALUES(?, ?, ?, ?, ?)", contribution)
+    db.commit() #save changes
+    db.close()
+    return True
 #==========================================================
 def user_exists(a): #determines if user exists
-    db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
     results = c.execute("SELECT username, password FROM users WHERE username = ?", (a,)).fetchall() #needs to be in ' ', ? notation doesnt help with this 
     db.close()
@@ -101,23 +113,21 @@ def user_exists(a): #determines if user exists
         return True
     else: 
         return False
-
+#==========================================================
 def register_user(username, password): #determines if input is valid to register, adds to users table if so
     if user_exists(username):
         return False
     else:
         db = sqlite3.connect(DB_FILE, check_same_thread=False) 
         c = db.cursor()
-        inserter = [(username, password, f"{uuid.uuid1()}")]
+        inserter = [(username, password)]
         print(inserter)
-        c.executemany("INSERT INTO users VALUES(?, ?, ?)", inserter)
-        #WARNING fSTRING, replace with id system to avoid later 
-        #s.execute(f"CREATE TABLE ")
+        c.executemany("INSERT INTO users VALUES(?, ?);", inserter)
         db.commit() #save changes
         db.close()
         return True
-register_user("daniel", "abcde")
-def login_user(username, password):
+#==========================================================
+def login_user(username, password): 
     if user_exists(username):
         db = sqlite3.connect(DB_FILE, check_same_thread=False) 
         c = db.cursor()
@@ -125,10 +135,31 @@ def login_user(username, password):
         db.close()
         return password == results[0][0]
     return False
-
-def all_users():
+#==========================================================
+def all_users(): #for printing all users and stories 
     db = sqlite3.connect(DB_FILE, check_same_thread=False) 
     c = db.cursor()
-    results = c.execute("SELECT * FROM users").fetchall()
+    results = c.execute("SELECT * FROM stories;").fetchall()
     db.close()
     return results
+#==========================================================
+def reset():
+    the_world = exodus()
+    sample()
+    print(all_users())
+#==========================================================
+def contributed_stories(username):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) 
+    c = db.cursor()
+    results = c.execute("SELECT title, date, body, genre FROM stories WHERE username = ?", (username,)).fetchall()
+    return results
+
+def full_story(title):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) 
+    c = db.cursor()
+    results = c.execute("SELECT username, date, body, genre FROM stories WHERE title = ? ORDER BY date", (title,)).fetchall()
+    return results
+
+# reset()
+# print(contributed_stories("daniel"))
+#CREATE TABLE stories (title TEXT NOT NULL, username TEXT PRIMARY KEY, date TEXT NOT NULL, body TEXT NOT NULL, genre TEXT NOT NULL);

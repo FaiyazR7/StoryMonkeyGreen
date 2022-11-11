@@ -4,12 +4,16 @@
     <title> STORY PAGE </title>
   </head>
   <body>
+    <form action="/homepage">
+      <button type="submit">back</button>
+    </form>
     <h2>
-      {{title}}
-      <form action="/homepage">
-        <button type="submit">back</button>
-      </form>
+      {{ title }}
     </h2>
+      {% for item in story %}
+      <p> {{ item[2] }} ------{{ item[0] }} {{ item[1] }}</p>
+      {% endfor %}
+
   </body>
 
 </html>
