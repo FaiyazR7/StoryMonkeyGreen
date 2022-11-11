@@ -22,3 +22,10 @@ danielH -- 2022-11-9 10:10
 * connected sqlite to routes for login and registering 
 * created methods that read tables to determine legal inputs for registering or to authenticate a user 
 * created base structure of start_story route with no connections/ requests implemented yet 
+
+danielH -- 2022-11-11 3:49
+* reformatted tables (combined them)
+* created methods that return a users' contributed stories, return a story's full body text 
+* incorporated datetime 
+* display stories contributed by the logged in user and a story's full text through routes, html, and jinja 
+* created better mock data 
