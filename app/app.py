@@ -20,7 +20,7 @@ def register():
         if db.register_user(request.form["username"], request.form["password"]):
             return redirect("/")
         else:
-            return render_template("register.html")
+            return render_template("register.html", error = "INVALID USERNAME!!")
 @app.route("/login", methods=["GET","POST"])
 def login():
     #check if username exists and then if password matches

@@ -8,7 +8,7 @@ DB_FILE="world.db"
                #facilitate db ops -- you will use cursor to trigger db events
 
 #===========================MOCK STATIC DATABASE TO POPULATE ROUTES W/ DATA=============================== 
-def genesis():
+def genesis(): #outdated 
     db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
     c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
     c.execute("DROP TABLE if exists users") #drop so no need to delete database each time the code changes
