@@ -30,6 +30,7 @@ def login():
             return redirect("/homepage")
             #return render_template("response.html", username = session["username"], stories = contributed_stories)
         else:
+            session["error"] = "Username or password incorrect!" 
             return redirect("/")
     else: 
         return redirect("/")
@@ -69,8 +70,13 @@ def stories(title): #apparently methods cannot have the same name even if there 
 
 @app.route("/create_story")
 def create_story():
-    return render_template("create_story.html")
-
+    if "username" in session:
+        if request.method == 'GET':
+            return render_template("create_story.html")
+        elif request.method == 'POST':
+            redirect("/homepage")
+    else:
+        return redirect("/")
 @app.route("/logout")
 def logout():
     session.pop("username", None) #pop to remove things from session 
