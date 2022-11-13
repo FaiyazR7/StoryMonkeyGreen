@@ -1,0 +1,30 @@
+<html>
+
+  <head>
+    <title> CONTRIBUTE PAGE </title>
+  </head>
+  <body>
+    <h2>
+      Welcome: {{username}}
+    </h2>
+    <form action="/logout" method="GET">
+      <button type="submit"> logout </button>
+    </form>
+    <h1>Start writing a story:</h1>
+    <form action="/create_story" method="GET">
+      <button type="submit">Start story</button>
+    </form>
+    <h1>Stories you can contribute to:</h1>
+    {% for item in stories %}
+    <h4>{{ item[0] }}</h4>
+    <form action="/find_stories" method="POST">
+      <button type="submit" name="title" value="{{ item[0] }}"> Start reading </button>
+    </form>
+    <h4>Last Contribution:</h4>
+    <p>{{ item[2] }}</p>
+     <p>{{ item[1] }}</p>
+     <br>
+    {% endfor %}
+  </body>
+
+</html>

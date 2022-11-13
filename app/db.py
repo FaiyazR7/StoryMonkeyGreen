@@ -104,6 +104,18 @@ def sample(): #adds sample data
     db.close()
     return True
 #==========================================================
+def add(body):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    date = c.execute("SELECT DATETIME('now');").fetchall()
+    contribution = [
+        ("Cinderella", "red", date[0][0], body, "good" ),
+    ]
+    c.executemany("INSERT INTO stories VALUES(?, ?, ?, ?, ?)", contribution)
+    db.commit() #save changes
+    db.close()
+    return True
+#==========================================================
 def user_exists(a): #determines if user exists
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
@@ -177,24 +189,37 @@ def contributed_stories(username):
     db = sqlite3.connect(DB_FILE, check_same_thread=False) 
     c = db.cursor()
     results = c.execute("SELECT title, date, body, genre FROM stories WHERE username = ?", (username,)).fetchall()
-    return results\
+    return results
         
-def non_contributed_stories(username):
+def non_contributed_stories_titles(username):
     db = sqlite3.connect(DB_FILE, check_same_thread=False) 
     c = db.cursor()    
     temp = c.execute("SELECT title FROM stories WHERE username = ?", (username,)).fetchall()
     hehe = tuple( [item for t in temp for item in t])
-    print(hehe)
-    blah = c.execute("SELECT title, date, body, genre FROM stories WHERE title NOT IN ?", hehe).fetchall()
-    return blah
+    blah = "SELECT DISTINCT title FROM stories WHERE title NOT IN (%s)" % ', '.join('?' for a in hehe)
+    results = c.execute(blah, hehe).fetchall()
+    return results
 
+def non_contributed_stories_helper(titles):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) 
+    c = db.cursor()
+    result = []
+    for title in titles:
+        title = title[0]
+        abc = c.execute("SELECT title, date, body, genre, username FROM stories WHERE title = ? ORDER BY date DESC LIMIT 1", (title,)).fetchall()
+        result.append(abc[0])
+    return result
+    db.close()
+def non_contributed_stories(username):
+    return non_contributed_stories_helper(non_contributed_stories_titles(username))
+print(non_contributed_stories("faiyaz"))
 def full_story(title):
     db = sqlite3.connect(DB_FILE, check_same_thread=False) 
     c = db.cursor()
     results = c.execute("SELECT username, date, body, genre FROM stories WHERE title = ? ORDER BY date", (title,)).fetchall()
     return results
 
-print(non_contributed_stories("faiyaz"))
+#print(non_contributed_stories("faiyaz"))
 # reset()
 # print(contributed_stories("daniel"))
 #CREATE TABLE stories (title TEXT NOT NULL, username TEXT PRIMARY KEY, date TEXT NOT NULL, body TEXT NOT NULL, genre TEXT NOT NULL);

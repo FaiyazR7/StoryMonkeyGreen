@@ -29,3 +29,6 @@ danielH -- 2022-11-11 3:49
 * incorporated datetime 
 * display stories contributed by the logged in user and a story's full text through routes, html, and jinja 
 * created better mock data 
+
+danielH -- 2022-11-13 1:56
+* helped Faiyaz display stories you can contribute to 

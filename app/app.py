@@ -25,6 +25,7 @@ def register():
             return redirect("/")
         else:
             return render_template("register.html", error = "INVALID USERNAME!!")
+
 @app.route("/login", methods=["GET","POST"])
 def login():
     #check if username exists and then if password matches
@@ -92,6 +93,12 @@ def create_story():
             redirect("/homepage")
     else:
         return redirect("/")
+
+@app.route("/contribute_story")
+def contribute_story():
+    non_contributed_stories = db.non_contributed_stories(session["username"])
+    return render_template("contribute.html", stories = non_contributed_stories)
+
 @app.route("/logout")
 def logout():
     session.pop("username", None) #pop to remove things from session 
