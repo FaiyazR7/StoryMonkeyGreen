@@ -10,6 +10,10 @@ def welcome():
     if "username" in session: 
         return redirect("/homepage")
     else:
+        if "error" in session:
+            error = session["error"]
+            session.pop("error", None)
+            return render_template("login.html", error = error)
         return render_template("login.html")
 
 @app.route("/register", methods=["GET","POST"])
