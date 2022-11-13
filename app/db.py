@@ -114,6 +114,16 @@ def user_exists(a): #determines if user exists
     else: 
         return False
 #==========================================================
+def title_exists(a): #determines if title exists
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    results = c.execute("SELECT title FROM stories WHERE title = ?", (a,)).fetchall() #needs to be in ' ', ? notation doesnt help with this 
+    db.close()
+    if len(results) > 0:
+        return True
+    else: 
+        return False
+#==========================================================
 def register_user(username, password): #determines if input is valid to register, adds to users table if so
     if user_exists(username):
         return False
@@ -126,6 +136,21 @@ def register_user(username, password): #determines if input is valid to register
         db.commit() #save changes
         db.close()
         return True
+
+#==========================================================
+def submit_story(title, username, text, genre):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    if title_exists(title) :
+        return False
+    else:
+        date = c.execute("SELECT DATETIME('now');").fetchall()
+        inserter = [(title, username, date[0][0], text, genre)]
+        c.executemany("INSERT INTO stories VALUES (?, ?, ?, ?, ?);", inserter)
+        db.commit()
+        db.close()
+        return True
+        
 #==========================================================
 def login_user(username, password): 
     if user_exists(username):
@@ -152,7 +177,16 @@ def contributed_stories(username):
     db = sqlite3.connect(DB_FILE, check_same_thread=False) 
     c = db.cursor()
     results = c.execute("SELECT title, date, body, genre FROM stories WHERE username = ?", (username,)).fetchall()
-    return results
+    return results\
+        
+def non_contributed_stories(username):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) 
+    c = db.cursor()    
+    temp = c.execute("SELECT title FROM stories WHERE username = ?", (username,)).fetchall()
+    hehe = tuple( [item for t in temp for item in t])
+    print(hehe)
+    blah = c.execute("SELECT title, date, body, genre FROM stories WHERE title NOT IN ?", hehe).fetchall()
+    return blah
 
 def full_story(title):
     db = sqlite3.connect(DB_FILE, check_same_thread=False) 
@@ -160,6 +194,7 @@ def full_story(title):
     results = c.execute("SELECT username, date, body, genre FROM stories WHERE title = ? ORDER BY date", (title,)).fetchall()
     return results
 
+print(non_contributed_stories("faiyaz"))
 # reset()
 # print(contributed_stories("daniel"))
 #CREATE TABLE stories (title TEXT NOT NULL, username TEXT PRIMARY KEY, date TEXT NOT NULL, body TEXT NOT NULL, genre TEXT NOT NULL);

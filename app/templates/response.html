@@ -14,6 +14,10 @@
     <form action="/create_story" method="GET">
       <button type="submit">Start story</button>
     </form>
+    <h1>Contribute to a story:</h1>
+    <form action="/contribute_story" method="GET">
+      <button type="submit">Contribute</button>
+    </form>
     <h1>Stories you can read:</h1>
     {% for item in stories %}
     <h4>{{ item[0] }}</h4>

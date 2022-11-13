@@ -71,6 +71,17 @@ def stories(title): #apparently methods cannot have the same name even if there 
         return render_template("story.html", story = full_story, title = title)
     else:
         return redirect("/")
+    
+@app.route("/creator", methods=["POST"])
+def add_story():
+    username = session["username"]
+    title = request.form["title"]
+    genre = request.form["genre"]
+    text = request.form["body"]
+    if db.submit_story(title, username, text, genre):
+        return redirect("/homepage")
+    else:
+        return render_template("create_story.html")
 
 @app.route("/create_story")
 def create_story():
