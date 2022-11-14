@@ -78,7 +78,13 @@ def stories(title, types): #apparently methods cannot have the same name even if
             if db.eligible(session["username"], title):
                 last_update = db.last_update(title)
                 print (last_update)
-                return render_template("edit.html", story = last_update, title = title)
+                if "error" in session:
+                    error = session["error"]
+                    session.pop("error", None)
+                    return render_template("edit.html", story = last_update, title = title, error = error)
+                    
+                else:
+                    return render_template("edit.html", story = last_update, title = title)
             else:
                 return redirect("/homepage")
     else:
@@ -123,7 +129,16 @@ def contribute_story():
 
 @app.route("/edit_story", methods=["POST"])
 def edit_story():
-    return redirect("/homepage")
+    
+    genre = request.form["genre"]
+    title = request.form["title"]
+    body = request.form["body"]
+    username = session["username"]
+    if db.add_contribution(title, username, body, genre):
+        return redirect("/homepage")
+    else:
+        session["error"]= "Body text field cannot be empty!"
+        return redirect(f"/stories/add/{title}")
 
 @app.route("/logout")
 def logout():
@@ -134,4 +149,4 @@ if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
     app.debug = True 
     app.run()
-
+    

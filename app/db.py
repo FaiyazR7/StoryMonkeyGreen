@@ -90,8 +90,8 @@ def exodus():
 def sample(): #adds sample data
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
-    register_user("daniel", "abcde")
-    register_user("faiyaz", "12345")
+    register_user("daniel", "abcdefgh")
+    register_user("faiyaz", "12345678")
     date = c.execute("SELECT DATETIME('now');").fetchall()
     print(date)
     contribution = [
@@ -244,6 +244,24 @@ def eligible(username, title):
     else:
         return True
     db.close()
+#==========================================================
+def add_contribution(title, username, body, genre ):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) 
+    c = db.cursor()
+    date = c.execute("SELECT DATETIME('now');").fetchall()
+    if len(body) != 0:
+        inserter = [(title, username, date[0][0], body, genre)]
+        c.executemany("INSERT INTO stories VALUES (?, ?, ?, ?, ?);", inserter)
+        db.commit()
+        db.close()
+        return True
+    else:
+        return False
+
+#==========================================================
+    
+    
+
 #print(non_contributed_stories("faiyaz"))
 # reset()
 # print(contributed_stories("daniel"))
