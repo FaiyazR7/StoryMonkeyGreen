@@ -1,0 +1,30 @@
+<html>
+
+  <head>
+    <title> EDIT STORY PAGE </title>
+  </head>
+  <body>
+    <h2>
+      Welcome: {{ session["username"] }}
+    </h2>
+    <form action="/logout" method="GET">
+      <button type="submit"> logout </button>
+    </form>
+    <form action="/contribute_story">
+      <input type="hidden" name="genre" value="{{session['genre']}}">
+      <button type="submit">back</button>
+      <form action="/homepage">
+        <button type="submit">homepage</button>
+      </form>
+    </form>
+    <h2> Adding to {{ title }}</h2>
+    <h4> genre: {{ story[0][3] }}</h4>
+    <h4>Latest update:<br>Author: {{ story[0][0] }}<br>Updated: {{ story[0][1] }}</h4>
+    <p>{{ story[0][2] }}</p>
+      <form action="/edit_story" method = "POST">
+        <input type="text" name="body" placeholder="But suddenly..." maxlength="150">  <br>
+        <input type="submit" name="sub1">  
+      </form>
+  </body>
+
+</html>

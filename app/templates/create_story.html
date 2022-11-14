@@ -4,21 +4,38 @@
     <title> STORY PAGE </title>
   </head>
   <body>
+    <h2>
+      Welcome: {{ session["username"] }}
+    </h2>
+    <form action="/logout" method="GET">
+      <button type="submit"> logout </button>
+    </form>
     <form action="/homepage">
-      <button type="submit">back</button>
+      <button type="submit">homepage</button>
+    </form>
+    <h1>Contribute to a story:</h1>
+    <form action="/contribute_story" method="GET">
+      <button type="submit" name = "genre" value = "All">Contribute</button>
     </form>
     <h2> CREATE THY TALE
     </h2>
       <form action="/creator" method = "POST">
         <input type="text" name="title" placeholder="title"> <br>
         <label for="genre">Genre:</label>
-        <select name="genre" id="genre">
-          <option value="good">Good</option>
-          <option value="good">Bad</option>
-        </select> <br>
+      <select name="genre" id="genre">
+        <option value="Fantasy">Fantasy</option>
+        <option value="Crime/Mystery">Crime/Mystery</option>
+        <option value="Science Fiction">Science Fiction</option>
+        <option value="Horror">Horror</option>
+        <option value="Contemporary">Contemporary</option>
+        <option value="Misc.">Misc.</option>
+      </select> <br>
         <input type="text" name="body" placeholder="In the beginning...">  <br>
         <input type="submit" name="sub1">  
       </form>
+      <h3 style="color:rgb(219, 0, 0);">
+        {{error | safe}}
+      </h3>
   </body>
 
 </html>

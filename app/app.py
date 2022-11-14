@@ -24,7 +24,7 @@ def register():
         if db.register_user(request.form["username"], request.form["password"]):
             return redirect("/")
         else:
-            return render_template("register.html", error = "INVALID USERNAME!!")
+            return render_template("register.html", error = "Invalid username or password!")
 
 @app.route("/login", methods=["GET","POST"])
 def login():
@@ -59,17 +59,28 @@ def homepage():
 def find_stories():
     if "username" in session:
         title_of_story = request.form["title"]
-        return redirect(url_for("stories", title = title_of_story)) #stories is the name of the function, not route ??
+        return redirect(url_for("stories", title = title_of_story, types = request.form["type"])) #stories is the name of the function, not route ??
     else:
         return redirect("/")
 
-@app.route("/stories/<title>", methods=["GET","POST"])
-def stories(title): #apparently methods cannot have the same name even if there are different parameters, so storied instead of stories to avoid conflict
+@app.route("/stories/<types>/<title>", methods=["GET","POST"])
+def stories(title, types): #apparently methods cannot have the same name even if there are different parameters, so storied instead of stories to avoid conflict
     #method to input the story name to return all fields 
     if "username" in session:
-        full_story = db.full_story(title)
-        print (full_story)
-        return render_template("story.html", story = full_story, title = title)
+        if types == "read":
+            if not db.eligible(session["username"], title):
+                full_story = db.full_story(title)
+                #print (full_story)
+                return render_template("story.html", story = full_story, title = title)
+            else:
+                return redirect("/homepage")
+        else:
+            if db.eligible(session["username"], title):
+                last_update = db.last_update(title)
+                print (last_update)
+                return render_template("edit.html", story = last_update, title = title)
+            else:
+                return redirect("/homepage")
     else:
         return redirect("/")
     
@@ -82,31 +93,41 @@ def add_story():
     if db.submit_story(title, username, text, genre):
         return redirect("/homepage")
     else:
-        return render_template("create_story.html")
+        session["error"] = "Invalid or incomplete forms"
+        return redirect("create_story")
 
 @app.route("/create_story")
 def create_story():
     if "username" in session:
         if request.method == 'GET':
-            return render_template("create_story.html")
+            if "error" in session:
+                error = session["error"]
+                session.pop("error", None)
+                return render_template("create_story.html", error = error)
+            else:
+                return render_template("create_story.html")
         elif request.method == 'POST':
             redirect("/homepage")
     else:
         return redirect("/")
 
-@app.route("/contribute_story")
+@app.route("/contribute_story", methods=["GET"])
 def contribute_story():
-    non_contributed_stories = db.non_contributed_stories(session["username"])
-    return render_template("contribute.html", stories = non_contributed_stories)
+    if "username" in session:
+        session["genre"] = request.args["genre"]
+        print (request.args["genre"])
+        non_contributed_stories = db.non_contributed_stories(session["username"], session["genre"])
+        return render_template("contribute.html", stories = non_contributed_stories)
+    else:
+        return redirect("/")
+
+@app.route("/edit_story", methods=["POST"])
+def edit_story():
+    return redirect("/homepage")
 
 @app.route("/logout")
 def logout():
     session.pop("username", None) #pop to remove things from session 
-    return redirect("/")
-
-@app.route("/check")
-def check():
-    print (db.all_users())
     return redirect("/")
 
 if __name__ == "__main__": #false if this file imported as module

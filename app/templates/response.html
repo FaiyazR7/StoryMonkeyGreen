@@ -16,12 +16,13 @@
     </form>
     <h1>Contribute to a story:</h1>
     <form action="/contribute_story" method="GET">
-      <button type="submit">Contribute</button>
+      <button type="submit" name = "genre" value = "All">Contribute</button>
     </form>
     <h1>Stories you can read:</h1>
     {% for item in stories %}
     <h4>{{ item[0] }}</h4>
     <form action="/find_stories" method="POST">
+      <input type="hidden" name="type" value="read">
       <button type="submit" name="title" value="{{ item[0] }}"> Start reading </button>
     </form>
     <h4>You Wrote:</h4>
