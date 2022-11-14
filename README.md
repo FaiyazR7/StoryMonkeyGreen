@@ -11,5 +11,5 @@
 * Step 4: python3 -m venv venv
 * Step 5: venv/bin/activate
 * Step 6: pip install -r requirements.txt
-* Step 7: python app.py
+* Step 7: python __init__.py
 * Step 8: CTRL + click on link
