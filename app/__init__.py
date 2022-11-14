@@ -7,6 +7,7 @@ app.secret_key = b"hehe"
 
 @app.route("/")
 def welcome():
+    db.start()
     if "username" in session: 
         return redirect("/homepage")
     else:

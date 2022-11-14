@@ -87,6 +87,18 @@ def exodus():
     db.close()  #close database
     return True
 #==========================================================
+def start():
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
+    c = db.cursor()
+    c.executescript(""" 
+        CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS stories (title TEXT NOT NULL, username TEXT NOT NULL, date TEXT NOT NULL, body TEXT NOT NULL, genre TEXT NOT NULL);
+    """
+    )
+    db.commit() #save changes
+    db.close()  #close database
+    return True
+#==========================================================
 def sample(): #adds sample data
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
