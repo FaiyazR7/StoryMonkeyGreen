@@ -32,3 +32,9 @@ danielH -- 2022-11-11 3:49
 
 danielH -- 2022-11-13 1:56
 * helped Faiyaz display stories you can contribute to 
+
+danielH -- 2022-11-14 12:06
+* displayed errors for creating a story 
+* search for stories to contribute to by genre 
+* implemented eligibility for reading or adding to a story 
+* fixed navigation 
