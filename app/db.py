@@ -215,7 +215,7 @@ def non_contributed_stories_helper(titles):
         title = title[0]
         abc = c.execute("SELECT title, date, body, genre, username FROM stories WHERE title = ? ORDER BY date DESC LIMIT 1", (title,)).fetchall()
         result.append(abc[0])
-        db.close()
+    db.close()
     return result
 #==========================================================
 def non_contributed_stories(username, genre):
