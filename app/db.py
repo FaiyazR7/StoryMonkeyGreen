@@ -244,7 +244,6 @@ def eligible(username, title):
     else:
         return True
     db.close()
-reset()
 #print(non_contributed_stories("faiyaz"))
 # reset()
 # print(contributed_stories("daniel"))
