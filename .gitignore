@@ -116,13 +116,15 @@ venv.bak/
 .DS_Store
 ._*
 _*
+!__init__.py
 .Spotlight*
 .Trashes
 
 # Windows Files #
 Thumbs.db
 ehthumbs.db
-
+# Specific database
+world.db
 # Filenames with special characters
 **/*[\\/\:;*?!'"<>|$º•¶§∞¢£]*
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

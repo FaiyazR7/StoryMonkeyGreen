@@ -45,9 +45,7 @@ def login():
 def homepage():
     #check if username exists and then if password matches
     if "username" in session:
-        print("Username in session")
         contributed_stories = db.contributed_stories(session["username"])
-        print("collected contributed stories, if any")
         return render_template("response.html", username = session["username"], stories = contributed_stories)
         #return render_template("response.html", username = session["username"], stories = contributed_stories)
     else:
@@ -78,7 +76,7 @@ def stories(title, types): #apparently methods cannot have the same name even if
         else:
             if db.eligible(session["username"], title):
                 last_update = db.last_update(title)
-                print (last_update)
+                #print (last_update)
                 if "error" in session:
                     error = session["error"]
                     session.pop("error", None)
@@ -122,7 +120,7 @@ def create_story():
 def contribute_story():
     if "username" in session:
         session["genre"] = request.args["genre"]
-        print (request.args["genre"])
+        #print (request.args["genre"])
         non_contributed_stories = db.non_contributed_stories(session["username"], session["genre"])
         return render_template("contribute.html", stories = non_contributed_stories)
     else:

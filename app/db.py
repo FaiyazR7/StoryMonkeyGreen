@@ -95,6 +95,8 @@ def start():
         CREATE TABLE IF NOT EXISTS stories (title TEXT NOT NULL, username TEXT NOT NULL, date TEXT NOT NULL, body TEXT NOT NULL, genre TEXT NOT NULL);
     """
     )
+    if len(c.execute("SELECT * FROM users").fetchall()) == 0:
+        sample()
     db.commit() #save changes
     db.close()  #close database
     return True
@@ -105,12 +107,13 @@ def sample(): #adds sample data
     register_user("daniel", "abcdefgh")
     register_user("faiyaz", "12345678")
     date = c.execute("SELECT DATETIME('now');").fetchall()
-    print(date)
     contribution = [
         ("Cinderella", "daniel", date[0][0], "Once upon a time...", "Fantasy" ),
-        ("The Bible", "daniel", date[0][0], "In the beginning...", "Misc." ),
-        ("The Bible", "faiyaz", date[0][0], "God created the...", "Misc."),
-        ("Biography", "faiyaz", date[0][0], "It was good...", "Contemporary")
+        ("The Bible", "faiyaz", date[0][0], "In the beginning...", "Misc."),
+        ("Biography", "faiyaz", date[0][0], "It was good...", "Contemporary"),
+        ("Scary", "daniel", date[0][0], "It was bad...", "Horror"),
+        ("Murder", "faiyaz", date[0][0], "The Cat in the Hat was angry...", "Crime/Mystery"),
+        ("Alan", "daniel", date[0][0], "Alan was an alien...", "Science Fiction")
     ]
     c.executemany("INSERT INTO stories VALUES(?, ?, ?, ?, ?)", contribution)
     db.commit() #save changes
@@ -156,7 +159,6 @@ def register_user(username, password): #determines if input is valid to register
         db = sqlite3.connect(DB_FILE, check_same_thread=False) 
         c = db.cursor()
         inserter = [(username, password)]
-        print(inserter)
         c.executemany("INSERT INTO users VALUES(?, ?);", inserter)
         db.commit() #save changes
         db.close()
