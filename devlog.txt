@@ -59,4 +59,10 @@ danielH -- 2022-11-14 11:09
 FaiyazR -- 2022-11-15 12:00
 * updated design doc
 
+danielH -- 2022-11-15 2:05
+* updated design doc
+* Revisions:
+* Fleshed out routes, database methods
+* Simplified database middleware into one file
+* Simplified tables used 
 
