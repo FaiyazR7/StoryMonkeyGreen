@@ -13,6 +13,9 @@ Wiki1 revisions:
 * added authentication 
 * deleted things that make no sense   
 
+FaiyazR -- 2022-11-3 2:30
+* Helped Daniel with Design doc and Wiki doc revisions and adjustments.
+
 danielH -- 2022-11-8 9:33
 * added routes for login, register, homepage, logout, and story 
 * created mock database to display static data in routes 
@@ -22,6 +25,10 @@ danielH -- 2022-11-9 10:10
 * connected sqlite to routes for login and registering 
 * created methods that read tables to determine legal inputs for registering or to authenticate a user 
 * created base structure of start_story route with no connections/ requests implemented yet 
+
+FaiyazR -- 2022-11-9 2:30
+* worked on methods in db.py for checking user register validness
+* Helped daniel fledge out app.routes for creating stories
 
 danielH -- 2022-11-11 3:49
 * reformatted tables (combined them)
@@ -33,6 +40,11 @@ danielH -- 2022-11-11 3:49
 danielH -- 2022-11-13 1:56
 * helped Faiyaz display stories you can contribute to 
 
+FaiyazR -- 2022-11-13 2:00
+* Added route for stories that users can contribute to
+* html page for displaying non-contributed stories
+* Error handling for empty text fields
+
 danielH -- 2022-11-14 12:06
 * displayed errors for creating a story 
 * search for stories to contribute to by genre 
@@ -43,4 +55,8 @@ danielH -- 2022-11-14 11:09
 * added css
 * untracked db file 
 * initialized sqlite tables properly when a user opens the webpage
+
+FaiyazR -- 2022-11-15 12:00
+* updated design doc
+
 
