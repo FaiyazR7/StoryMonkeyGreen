@@ -15,7 +15,7 @@
         Welcome: {{username}}
       </h2>
       <form action="/logout" method="GET">
-        <button type="submit" class="nav_form"> <b>Logout</b></button>
+        <button type="submit" class="nav_form"> Logout</button>
       </form>
 
     <br>
@@ -23,7 +23,7 @@
     <br>
 
       <form action="/create_story" method="GET">
-        <label for="lover">Start writing a story:</label>
+        <label for="lover">Start writing a new story:</label>
         <button type="submit" id = "lover">Start story</button>
       </form>
     <form action="/contribute_story" method="GET">
@@ -31,7 +31,7 @@
       <button type="submit" name = "genre" value = "All" id="creative">Contribute</button>
     </form>
     <div>     
-        <h3 style="text-align: center;">Stories you can read:</h3>
+        <h3 style="text-align: center;">Read the stories you contributed to:</h3>
         {% for item in stories %}
         <div class = "card">
           <div style="display: flex;">

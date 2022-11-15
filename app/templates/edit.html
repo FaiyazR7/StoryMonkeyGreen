@@ -2,31 +2,34 @@
 
   <head>
     <title> EDIT STORY PAGE </title>
+    <link rel="stylesheet"
+    type="text/css"
+    href="../static/home.css"/>
   </head>
   <body>
-    <h2>
+    <div style="display:flex;justify-content:space-between">
+    <h2 class="nav" style="margin:-3px ;">
       Welcome: {{ session["username"] }}
     </h2>
-    <form action="/logout" method="GET">
-      <button type="submit"> logout </button>
-    </form>
-    <form action="/contribute_story">
+    <form action="/contribute_story" style="display:inline-block; margin-left: -20%;">
       <input type="hidden" name="genre" value="{{session['genre']}}">
-
       <button type="submit">back</button>
-      <form action="/homepage">
-        <button type="submit">homepage</button>
-      </form>
     </form>
-
+    <form action="/homepage" style="display:inline-block;">
+        <button type="submit">homepage</button>
+    </form>
+    <form action="/logout" method="GET" style="display:inline-block;color: aqua;">
+      <button type="submit" style="background-color: brown;color: aliceblue;border: 0px;padding: 5px 10px;margin-right: 10px;"> logout </button>
+    </form>
+  </div>
     <h2> Adding to {{ title }}</h2>
-    <h4> genre: {{ story[0][3] }}</h4>
-    <h4>Latest update:<br>Author: {{ story[0][0] }}<br>Updated: {{ story[0][1] }}</h4>
+    <p> genre: {{ story[0][3] }}<p>
+    <p>Latest update:<br>Author: {{ story[0][0] }}<br>Updated: {{ story[0][1] }}</p>
     <p>{{ story[0][2] }}</p>
       <form action="/edit_story" method = "POST">
-        <input type="text" name="body" placeholder="But suddenly..." maxlength="1000">  <br>
-        <input type="hidden" name="genre" value="{{story[0][3]}}">
+        <textarea name="body" placeholder="But suddenly..." id="body" rows="15" cols="100" maxlength="1000"></textarea>        <input type="hidden" name="genre" value="{{story[0][3]}}">
         <input type="hidden" name="title" value="{{title}}">
+        <br> <br>
         <input type="submit" name="sub1">  
         
       </form>

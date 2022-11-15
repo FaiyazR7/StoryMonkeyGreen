@@ -2,25 +2,29 @@
 
   <head>
     <title> STORY PAGE </title>
+    <link rel="stylesheet"
+    type="text/css"
+    href="../static/home.css"/>
   </head>
   <body>
-    <h2>
+    <h2 class="nav">
       Welcome: {{ session["username"] }}
     </h2>
     <form action="/logout" method="GET">
-      <button type="submit"> logout </button>
+      <button type="submit" class="nav_form"> logout </button>
     </form>
     <form action="/homepage">
       <button type="submit">homepage</button>
     </form>
-    <h1>Contribute to a story:</h1>
+    <br>
     <form action="/contribute_story" method="GET">
-      <button type="submit" name = "genre" value = "All">Contribute</button>
+      <label for="lover">Contribute to a story:</label>
+      <button type="submit" name = "genre" value = "All" id="lover">Contribute</button>
     </form>
-    <h2> CREATE THY TALE
-    </h2>
+      <h2> CREATE THY TALE</h2>
       <form action="/creator" method = "POST">
-        <input type="text" name="title" placeholder="title"> <br>
+        <label for="title">Title:&nbsp;&nbsp;</label>
+        <input type="text" name="title" id="title"> <br><br>
         <label for="genre">Genre:</label>
       <select name="genre" id="genre">
         <option value="Fantasy">Fantasy</option>
@@ -29,11 +33,13 @@
         <option value="Horror">Horror</option>
         <option value="Contemporary">Contemporary</option>
         <option value="Misc.">Misc.</option>
-      </select> <br>
-        <input type="text" name="body" placeholder="In the beginning...">  <br>
-        <input type="submit" name="sub1">  
+      </select> <br><br>
+      <label for="body" style="vertical-align: top;">Body:</label>
+        <textarea name="body" placeholder="In the beginning..." id="body" rows="15" cols="100"></textarea>
+        <br><br>
+        <input type="submit" name="sub1" style="margin-left:45px;">  
       </form>
-      <h3 style="color:rgb(219, 0, 0);">
+      <h3 style="color:rgb(219, 0, 0);margin-left:45px;">
         {{error | safe}}
       </h3>
   </body>

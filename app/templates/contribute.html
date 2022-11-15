@@ -2,23 +2,30 @@
 
   <head>
     <title> CONTRIBUTE PAGE </title>
+    <link rel="stylesheet"
+    type="text/css"
+    href="../static/home.css"/>
+    <link rel="stylesheet"
+    type="text/css"
+    href="../static/box.css"/>
   </head>
   <body>
-    <h2>
+    <h2 class="nav">
       Welcome: {{ session["username"] }}
     </h2>
     <form action="/logout" method="GET">
-      <button type="submit"> logout </button>
+      <button type="submit" class="nav_form"> logout </button>
     </form>
     <form action="/homepage">
       <button type="submit">homepage</button>
     </form>
-    <h1>Start writing a story:</h1>
+    <br>
     <form action="/create_story" method="GET">
-      <button type="submit">Start story</button>
+      <label for="lover">Start writing a new story:</label>
+      <button type="submit" id="lover">Start story</button>
     </form>
-    <h1>Stories you can contribute to:</h1>
-    <form action="/contribute_story" method="GET">
+    <h3 style="text-align: center;">Stories you can contribute to:</h3>
+    <form action="/contribute_story" method="GET" style="text-align: center;">
       <label for="genre">Filter for:</label>
       <select name="genre" id="genre">
         <option value="All">All</option>
@@ -32,15 +39,21 @@
       <input type="submit" name="sub1">  
     </form>
     {% for item in stories %}
-    <h4>{{ item[0] }}</h4>
-    <form action="/find_stories" method="POST">
-      <input type="hidden" name="type" value="add">
-      <button type="submit" name="title" value="{{ item[0] }}"> Add to story </button>
-    </form>
+    <div class = "card">
+      <div style="display: flex;">
+        <h1 class="title">{{ item[0] }}</h1>
+        <form action="/find_stories" method="POST" class="start">
+          <input type="hidden" name="type" value="add">
+          <button type="submit" name="title" value="{{ item[0] }}" style="width:93px;"> Add to story </button>
+        </form>
+        <p class ="genre">{{ item[3] }}</p>
+      </div>
+      <div class="bottom"></div>
     <h4>Last Contribution:</h4>
-    <p>{{ item[2] }}</p>
-     <p>{{ item[1] }}</p>
-     <br>
+    <p class="text_body">{{ item[2] }}</p>
+        <p class="date">{{ item[1] }}</p>
+    </div>
+  </div>
     {% endfor %}
   </body>
 
