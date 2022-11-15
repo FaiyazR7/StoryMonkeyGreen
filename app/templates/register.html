@@ -9,22 +9,39 @@ time spent:
 <html>
   <head>
     <title> LOGIN PAGE </title>
+    <link rel="stylesheet"
+    type="text/css"
+    href="../static/box.css"/>
   </head>
   <body>
+    <div class="row">
+      <div class="column">
+          {% for item in range(7) %}
+            <div class="story">
+              <b>STORY</b> <em>Story</em> story<br>
+            </div>
+          {% endfor %}
+      </div>
+      <div class="column" style="margin-top: 33vh; font-family: 'Courier New', Courier, monospace;">
     <form action="/">
       <button type="submit">back</button>
     </form>
     <h3>
-      Enter a username and password (8 characters minimum) to REGISTER.
+      Enter a username and password to REGISTER.
     </h3>
     <form action="/register" method="POST">
-      <input type="text" name="username" placeholder="username">
-      <input type="password" name="password" placeholder="password">
+      <label for="user">Username:</label>
+      <input type="text" name="username" placeholder="username" id="user"> <br>
+      <label for="password">Password:</label>
+      <input type="password" name="password" placeholder="8 characters min." id ="password">
       <input type="submit" name="sub1">
     </form>
     <h3 style="color:rgb(219, 0, 0);">
       {{error | safe}}
     </h3>
+    </div>
+  </div>
+
   </body>
 
 </html>

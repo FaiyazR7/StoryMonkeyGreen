@@ -1,0 +1,58 @@
+.nav {
+    display: inline-block;
+    float: left;
+    width: 50%;
+    margin: auto;
+}
+
+.nav_form {
+    float: right;
+    background-color: brown;
+    color: aliceblue;
+    border: 0px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+.card{
+    word-break:break-all;
+    background-color: rgb(209, 224, 224);
+    text-align: center;
+    width:80%;
+    margin-left: 10%;
+    border-radius: 10px;
+}
+
+.text_body{
+    text-align: left;
+    padding: 0px 20px;
+    font-size: 17px;
+}
+
+.title{
+    width: 47%;
+    text-align: left;
+    display: inline-block;
+    padding: 0px 20px;
+    
+}
+
+.genre{
+    padding-right: 20px;
+    width:50%;
+    text-align: right;
+    margin: auto;
+}
+
+.date{
+   color: rgb(158, 158, 146); 
+   padding-bottom: 20px;
+}
+
+.start{
+    margin: auto;
+}
+
+.bottom{
+    margin-top: -25px;
+}

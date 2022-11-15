@@ -2,34 +2,54 @@
 
   <head>
     <title> RESPONSE PAGE </title>
+    <link rel="stylesheet"
+    type="text/css"
+    href="../static/home.css"/>
+    <link rel="stylesheet"
+    type="text/css"
+    href="../static/box.css"/>
   </head>
   <body>
-    <h2>
-      Welcome: {{username}}
-    </h2>
-    <form action="/logout" method="GET">
-      <button type="submit"> logout </button>
-    </form>
-    <h1>Start writing a story:</h1>
-    <form action="/create_story" method="GET">
-      <button type="submit">Start story</button>
-    </form>
-    <h1>Contribute to a story:</h1>
+
+      <h2 class="nav">
+        Welcome: {{username}}
+      </h2>
+      <form action="/logout" method="GET">
+        <button type="submit" class="nav_form"> <b>Logout</b></button>
+      </form>
+
+    <br>
+    <br>
+    <br>
+
+      <form action="/create_story" method="GET">
+        <label for="lover">Start writing a story:</label>
+        <button type="submit" id = "lover">Start story</button>
+      </form>
     <form action="/contribute_story" method="GET">
-      <button type="submit" name = "genre" value = "All">Contribute</button>
+      <label for="creative">Contribute to a story:</label>
+      <button type="submit" name = "genre" value = "All" id="creative">Contribute</button>
     </form>
-    <h1>Stories you can read:</h1>
-    {% for item in stories %}
-    <h4>{{ item[0] }}</h4>
-    <form action="/find_stories" method="POST">
-      <input type="hidden" name="type" value="read">
-      <button type="submit" name="title" value="{{ item[0] }}"> Start reading </button>
-    </form>
-    <h4>You Wrote:</h4>
-    <p>{{ item[2] }}</p>
-     <p>{{ item[1] }}</p>
-     <br>
-    {% endfor %}
+    <div>     
+        <h3 style="text-align: center;">Stories you can read:</h3>
+        {% for item in stories %}
+        <div class = "card">
+          <div style="display: flex;">
+            <h1 class="title">{{ item[0] }}</h1>
+            <form action="/find_stories" method="POST" class="start">
+              <input type="hidden" name="type" value="read">
+              <button type="submit" name="title" value="{{ item[0] }}" style="width:93px;"> Start reading </button>
+            </form>
+            <p class ="genre">{{ item[3] }}</p>
+          </div>
+          <div class="bottom">
+        <h4>You Wrote:</h4>
+        <p class="text_body">{{ item[2] }}</p>
+        <p class="date">{{ item[1] }}</p>
+      </div>
+      </div>
+        {% endfor %}
+    </div>
   </body>
 
 </html>
